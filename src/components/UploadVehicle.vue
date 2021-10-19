@@ -1,7 +1,7 @@
 <template>
   <div>
-  sad
-    <div v-if="loading" >uloaded {{current}} of {{total}}</div>
+    sad
+    <div v-if="loading">uloaded {{ current }} of {{ total }}</div>
     <input v-else type="file" @change="uploadFile($event)" />
   </div>
 </template>
@@ -37,32 +37,30 @@ export default {
     },
     async addVhicles() {
       const response = await db.collection("vhicles").doc(this.name);
-       if (!response.exists) {
-           await response.set({
-                 data: 'data'
-            });
-        }
-        this.total = this.data.length;
-        for (let i = 0; i < this.total; i++) {
-            this.current = i;
-            const key = new Date(this.data[i]["Date/Time"]).getTime().toString();        
-            const subcollection =  response.collection('data').doc(key);
-        
-            await subcollection.set({
-                 ...this.data[i]
-            });
-        }
-         this.loading = false;
+      if (!response.exists) {
+        await response.set({
+          data: "data",
+        });
+      }
+      this.total = this.data.length;
+      const img = this.getRandomNum() + ".png";
+      for (let i = 0; i < this.total; i++) {
+        this.current = i;
+        const key = new Date(this.data[i]["Date/Time"]).getTime().toString();
+        const subcollection = response.collection("data").doc(key);
+
+        await subcollection.set({
+          ...this.data[i],
+          img: img,
+        });
+      }
+      this.loading = false;
     },
-    async getVehicles() {
-      const response = await db.collection("vhicles").doc("A2302888").get();
-    
-      console.log(response);
+
+    getRandomNum() {
+      return Math.floor(Math.random() * 3);
     },
   },
-  mounted() {
-    this.getVehicles();
-    // this.addVhicles()
-  },
+  mounted() {},
 };
 </script>

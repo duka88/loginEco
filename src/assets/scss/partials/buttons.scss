@@ -1,0 +1,14 @@
+.btn {
+  color: $black;
+  border: 2px solid $black;
+  padding: 8px 30px;
+  display: table;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: $white;
+  transition: background-color 0.4s ease-in-out;
+  &:hover {
+    background-color: darken($white, 20%);
+  }
+}

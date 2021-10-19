@@ -1,0 +1,30 @@
+.vehicle-table__wrap {
+  width: 100%;
+  overflow-x: auto;
+  @include scrollbarX;
+  @include screen-min("desk") {
+    margin: 50px 0;
+  }
+}
+.vehicle-table__table {
+  border-collapse: collapse;
+}
+.vehicle-table__head,
+.vehicle-table__cell {
+  border: 1px solid $black;
+  font-size: 12px;
+  white-space: nowrap;
+  padding: 5px 10px;
+  @include screen-min("desk") {
+    font-size: 14px;
+  }
+}
+.vehicle-table__head {
+  font-weight: 700;
+}
+.vehicle-table__pagination {
+  @include flex-between(center);
+  width: 100%;
+  max-width: 260px;
+  margin: 30px auto;
+}

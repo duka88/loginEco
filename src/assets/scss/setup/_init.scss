@@ -1,0 +1,18 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  font-family: $font-main;
+}
+
+.main {
+  min-height: calc(100vh - 50px);
+  padding: 100px 0 50px;
+
+  @include screen-min("desk") {
+    padding: 150px 0 80px;
+  }
+}
+.section {
+  @include max-width;
+}

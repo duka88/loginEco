@@ -1,6 +1,17 @@
-@import './setup/mixins';
-@import './setup/reset';
-@import './setup/variables';
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap");
+@import "./setup/mixins";
+@import "./setup/reset";
+@import "./setup/variables";
 
-@import './partials/loader';
+@import "./setup/init";
 
+@import "./partials/loader";
+@import "./partials/text";
+@import "./partials/buttons";
+
+@import "./sections/shared/header";
+@import "./sections/shared/footer";
+
+@import "./sections/vehicle/header";
+@import "./sections/vehicle/list";
+@import "./sections/vehicle/table";

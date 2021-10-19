@@ -1,0 +1,48 @@
+.header {
+  width: 100%;
+  padding: 15px 0;
+  box-shadow: 1px 1px 7px 1px $gray;
+  position: fixed;
+  top: 0;
+  background-color: $white;
+  z-index: 2;
+  width: 100%;
+  left: 0;
+}
+.header__wrap {
+  @include max-width;
+  @include flex-between(center);
+}
+.header__logo {
+  width: 120px;
+  img {
+    @include img-auto;
+  }
+  @include screen-min("desk") {
+    width: 200px;
+  }
+}
+.header__nav {
+  @include screen-min("tab") {
+    @include abs-center;
+  }
+}
+.header__nav-item {
+  a {
+    color: $black;
+    @include underline-hover($black);
+    font-size: 13px;
+    margin-left: 10px;
+    font-weight: 500;
+    &.router-link-exact-active {
+      @include underline($black);
+    }
+    @include screen-min("tab") {
+      margin: 0 10px;
+    }
+    @include screen-min("desk") {
+      margin: 0 15px;
+      font-size: 16px;
+    }
+  }
+}

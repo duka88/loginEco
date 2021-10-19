@@ -27,9 +27,9 @@
 }
 
 @mixin max-width {
-  padding: 0 15px;
-
-  @include screen-min('desk') {
+  padding: 0 10px;
+  width: 100%;
+  @include screen-min("desk") {
     max-width: 1540px;
     margin: 0 auto;
   }
@@ -42,7 +42,8 @@
 }
 
 @mixin text-border($color) {
-  text-shadow: -2px -2px 0 $color, 2px -2px 0 $color, -2px 2px 0 $color, 2px 2px 0 $color;
+  text-shadow: -2px -2px 0 $color, 2px -2px 0 $color, -2px 2px 0 $color,
+    2px 2px 0 $color;
 }
 
 @mixin grid($col, $gap) {
@@ -57,11 +58,29 @@
   background-repeat: no-repeat;
 }
 
-@mixin gradient ($color) {
+@mixin gradient($color) {
   background: rgba($color, 1);
-  background: -moz-linear-gradient(180deg, rgba($color, 1) 10%, rgba(lighten($color, 10%), 1) 38%, rgba(lighten($color, 10%), 1) 58%, rgba($color, 1) 90%);
-  background: -webkit-linear-gradient(180deg, rgba($color, 1) 10%, rgba(lighten($color, 10%), 1) 38%, rgba(lighten($color, 10%), 1) 58%, rgba($color, 1) 90%);
-  background: linear-gradient(180deg, rgba($color, 1) 10%, rgba(lighten($color, 10%), 1) 38%, rgba(lighten($color, 10%), 1) 58%, rgba($color, 1) 90%);
+  background: -moz-linear-gradient(
+    180deg,
+    rgba($color, 1) 10%,
+    rgba(lighten($color, 10%), 1) 38%,
+    rgba(lighten($color, 10%), 1) 58%,
+    rgba($color, 1) 90%
+  );
+  background: -webkit-linear-gradient(
+    180deg,
+    rgba($color, 1) 10%,
+    rgba(lighten($color, 10%), 1) 38%,
+    rgba(lighten($color, 10%), 1) 58%,
+    rgba($color, 1) 90%
+  );
+  background: linear-gradient(
+    180deg,
+    rgba($color, 1) 10%,
+    rgba(lighten($color, 10%), 1) 38%,
+    rgba(lighten($color, 10%), 1) 58%,
+    rgba($color, 1) 90%
+  );
 }
 
 @mixin img-auto {
@@ -110,42 +129,14 @@
   font-family: "Font Awesome 5 Pro";
   content: $icon;
 }
-@mixin svg-icon($icon){
-  content: '';
+@mixin svg-icon($icon) {
+  content: "";
   display: inline-block;
   mask-image: url($icon);
   margin-right: 8px;
   width: 15px;
   height: 15px;
   mask-repeat: no-repeat;
-}
-
-@mixin underlin-hover($color) {
-  position: relative;
-  margin-bottom: 15px;
-  padding-bottom: 15px;
-
-  @include screen-min('desk') {
-    margin-bottom: 30px;
-    padding-bottom: 30px;
-  }
-
-  &:after {
-    content: '';
-    display: block;
-    width: 30px;
-    height: 1px;
-    background-color: $blue;
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    transition: color 0.3s ease-in-out;
-    transform: translateX(-50%);
-
-    @include screen-min('desk') {
-      width: 50px;
-    }
-  }
 }
 
 @mixin underline-hover($color) {
@@ -159,7 +150,7 @@
     width: 0;
     height: 1px;
     background-color: $color;
-    transition: width .2s ease;
+    transition: width 0.2s ease;
   }
 
   &:hover {
@@ -168,13 +159,26 @@
     &:after {
       width: 100%;
       left: 0;
-
     }
+  }
+}
+@mixin underline($color) {
+  position: relative;
+
+  &:after {
+    content: " ";
+    position: absolute;
+    bottom: -3px;
+    width: 100%;
+    left: 0;
+    height: 1px;
+    background-color: $color;
   }
 }
 
 @mixin text-border($color) {
-  text-shadow: -2px -2px 0 $color, 2px -2px 0 $color, -2px 2px 0 $color, 2px 2px 0 $color;
+  text-shadow: -2px -2px 0 $color, 2px -2px 0 $color, -2px 2px 0 $color,
+    2px 2px 0 $color;
 }
 
 @mixin screen-min($breakpoint) {
@@ -186,5 +190,36 @@
 @mixin screen-max($breakpoint) {
   @media (max-width: map-get($breakpoints, $breakpoint)) {
     @content;
+  }
+}
+
+@mixin scrollbarX() {
+  overflow: auto;
+  width: 100%;
+  scrollbar-color: $gray;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 13px;
+  }
+  &::-webkit-scrollbar:vertical {
+    width: 13px;
+  }
+  &::-webkit-scrollbar:horizontal {
+    height: 13px;
+  }
+  &::-webkit-scrollbar-track-piece {
+    background: $gray-light;
+    border-radius: 13px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: $gray;
+    border-radius: 13px;
+  }
+  &::-webkit-scrollbar-button:end:increment {
+    display: block;
+    background: transparent;
   }
 }

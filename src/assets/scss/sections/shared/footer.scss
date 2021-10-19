@@ -1,0 +1,14 @@
+.footer {
+  width: 100%;
+  height: 50px;
+  box-shadow: 1px 1px 7px 1px $gray;
+  background-color: $white;
+  @include flex-start(center);
+}
+.footer__wrap {
+  @include max-width;
+  a {
+    color: $black;
+    font-weight: 700;
+  }
+}

@@ -1,0 +1,39 @@
+.vehicle-list {
+  @include screen-min("desk") {
+    padding-top: 60px;
+  }
+}
+.vehicle-list__wrap {
+  @include flex-center(center);
+}
+
+.vehicle-list__single {
+  width: 100%;
+  padding: 20px;
+  cursor: pointer;
+  position: relative;
+  top: 0;
+  transition: top 0.4s ease-in-out;
+  &:hover {
+    top: -15px;
+  }
+  @include screen-min("tab") {
+    width: 50%;
+  }
+  @include screen-min("desk") {
+    width: 33%;
+  }
+}
+.vehicle-list__single-wrap {
+  box-shadow: 4px 3px 5px 1px $gray-light;
+  padding: 20px;
+}
+
+.vehicle-list__img {
+  @include figure(100%);
+
+  img {
+    @include abs-center;
+    @include img-auto;
+  }
+}

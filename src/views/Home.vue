@@ -1,16 +1,17 @@
 <template>
-  <div class="home">
-      <UploadVehicle ></UploadVehicle>
+  <div class="section">
+    <List></List>
   </div>
 </template>
 
 <script>
-import UploadVehicle from '../components/UploadVehicle.vue';
-
+// import UploadVehicle from "../components/UploadVehicle.vue";
+import List from "../components/vehicle/List";
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
-    UploadVehicle
-  }
-}
+    // UploadVehicle,
+    List,
+  },
+};
 </script>
