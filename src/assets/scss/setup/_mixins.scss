@@ -1,0 +1,190 @@
+@mixin flex-center($align) {
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: $align;
+}
+
+@mixin flex-start($align) {
+  justify-content: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: $align;
+}
+
+@mixin flex-between($align) {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: $align;
+}
+
+@mixin flex-end($align) {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  align-items: $align;
+}
+
+@mixin max-width {
+  padding: 0 15px;
+
+  @include screen-min('desk') {
+    max-width: 1540px;
+    margin: 0 auto;
+  }
+}
+
+@mixin max-width-text {
+  padding: 0 15px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+@mixin text-border($color) {
+  text-shadow: -2px -2px 0 $color, 2px -2px 0 $color, -2px 2px 0 $color, 2px 2px 0 $color;
+}
+
+@mixin grid($col, $gap) {
+  display: grid;
+  grid-template-columns: repeat($col, 1fr);
+  grid-gap: $gap;
+}
+
+@mixin img-cover($position) {
+  background-size: cover;
+  background-position: $position;
+  background-repeat: no-repeat;
+}
+
+@mixin gradient ($color) {
+  background: rgba($color, 1);
+  background: -moz-linear-gradient(180deg, rgba($color, 1) 10%, rgba(lighten($color, 10%), 1) 38%, rgba(lighten($color, 10%), 1) 58%, rgba($color, 1) 90%);
+  background: -webkit-linear-gradient(180deg, rgba($color, 1) 10%, rgba(lighten($color, 10%), 1) 38%, rgba(lighten($color, 10%), 1) 58%, rgba($color, 1) 90%);
+  background: linear-gradient(180deg, rgba($color, 1) 10%, rgba(lighten($color, 10%), 1) 38%, rgba(lighten($color, 10%), 1) 58%, rgba($color, 1) 90%);
+}
+
+@mixin img-auto {
+  height: auto;
+  width: auto;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+@mixin figure($padding) {
+  width: 100%;
+  position: relative;
+  margin: 0;
+  height: 0;
+  padding-bottom: $padding;
+}
+
+@mixin img-zoom {
+  overflow: hidden;
+
+  img {
+    transition: transform 0.4s ease-in-out;
+  }
+
+  &:hover {
+    img {
+      transform: scale(1.1);
+    }
+  }
+}
+
+@mixin img-abs {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+@mixin abs-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin font-awesome($icon) {
+  font-family: "Font Awesome 5 Pro";
+  content: $icon;
+}
+@mixin svg-icon($icon){
+  content: '';
+  display: inline-block;
+  mask-image: url($icon);
+  margin-right: 8px;
+  width: 15px;
+  height: 15px;
+  mask-repeat: no-repeat;
+}
+
+@mixin underlin-hover($color) {
+  position: relative;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+
+  @include screen-min('desk') {
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+  }
+
+  &:after {
+    content: '';
+    display: block;
+    width: 30px;
+    height: 1px;
+    background-color: $blue;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transition: color 0.3s ease-in-out;
+    transform: translateX(-50%);
+
+    @include screen-min('desk') {
+      width: 50px;
+    }
+  }
+}
+
+@mixin underline-hover($color) {
+  position: relative;
+
+  &:after {
+    content: " ";
+    position: absolute;
+    right: 0;
+    bottom: -3px;
+    width: 0;
+    height: 1px;
+    background-color: $color;
+    transition: width .2s ease;
+  }
+
+  &:hover {
+    color: $color;
+
+    &:after {
+      width: 100%;
+      left: 0;
+
+    }
+  }
+}
+
+@mixin text-border($color) {
+  text-shadow: -2px -2px 0 $color, 2px -2px 0 $color, -2px 2px 0 $color, 2px 2px 0 $color;
+}
+
+@mixin screen-min($breakpoint) {
+  @media (min-width: map-get($breakpoints, $breakpoint)) {
+    @content;
+  }
+}
+
+@mixin screen-max($breakpoint) {
+  @media (max-width: map-get($breakpoints, $breakpoint)) {
+    @content;
+  }
+}
