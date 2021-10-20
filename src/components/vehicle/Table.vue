@@ -1,15 +1,18 @@
 <template>
   <div class="vehicle-table">
     <select v-model="limit" @change="setLimit()">
-      <option value="10">10</option>
-      <option value="20">20</option>
-      <option value="50">50</option>
-      <option value="100">100</option>
+      <option value="2">10</option>
+      <option value="2">20</option>
+      <option value="5">50</option>
+      <option value="10">100</option>
     </select>
     <div class="vehicle-table__wrap">
       <table class="vehicle-table__table">
         <thead>
           <tr>
+            <th class="vehicle-table__head">
+              Actions
+            </th>
             <th class="vehicle-table__head" v-for="key in keys" :key="key">
               {{ key }}
             </th>
@@ -17,6 +20,11 @@
         </thead>
         <tbody>
           <tr v-for="item in data" :key="item['Date/Time']">
+            <td class="vehicle-table__cell">
+              <span @click="setEdit(item)" class="vehicle-table__edit"
+                >edit</span
+              >
+            </td>
             <td class="vehicle-table__cell" v-for="key in keys" :key="key">
               {{ item[key] }}
             </td>
@@ -25,8 +33,16 @@
       </table>
     </div>
     <div class="vehicle-table__pagination">
-      <div class="btn" :class="{'btn--inactive': $route.query.page < 2}">&lt;&lt; Prev</div>
-      <div class="btn" :class="{'btn--inactive': !next}" @click="nextPage()">Next &gt;&gt;</div>
+      <div
+        class="btn"
+        :class="{ 'btn--inactive': $route.query.page < 2 }"
+        @click="prevPage()"
+      >
+        &lt;&lt; Prev
+      </div>
+      <div class="btn" :class="{ 'btn--inactive': !next }" @click="nextPage()">
+        Next &gt;&gt;
+      </div>
     </div>
   </div>
 </template>
@@ -42,29 +58,64 @@ export default {
   methods: {
     nextPage() {
       if (this.next) {
+        this.prev = false;
         this.$router.push({
           query: {
             id: this.$route.query.id,
             page: +this.$route.query.page + 1,
-            perPage: this.$route.query.perPage
+            perPage: this.$route.query.perPage,
           },
         });
       }
-    },  
-    setLimit(){
-      this.$router.push({
+    },
+    prevPage() {
+      if (this.$route.query.page > 1) {
+        this.prev = true;
+        this.$router.push({
           query: {
             id: this.$route.query.id,
-            page: this.$route.query.page,
-            perPage: this.limit
+            page: +this.$route.query.page - 1,
+            perPage: this.$route.query.perPage,
           },
         });
+      }
+    },
+    setLimit() {
+      this.$router.push({
+        query: {
+          id: this.$route.query.id,
+          page: this.$route.query.page,
+          perPage: this.limit,
+        },
+      });
     },
     getVehicle() {
       this.$store.dispatch("getVehicle", {
-        id: this.$route.query.id,       
+        id: this.$route.query.id,
         prev: this.prev,
-        limit: this.$route.query.perPage      
+        limit: this.$route.query.perPage,
+      });
+    },
+    checkPage() {
+      if (!this.next) {
+        this.$store.dispatch("getPage", {
+          id: this.$route.query.id,
+          prev: this.prev,
+          limit: this.$route.query.perPage,
+        });
+      } else {
+        this.getVehicle();
+      }
+    },
+    setEdit(item) {
+      this.$store.commit("setEditVehicle", item);
+      const date = item["Date/Time"].replaceAll(" ", "_").replaceAll(":", "-");
+      this.$router.push({
+        name: "edit-vehicle",
+        query: {
+          id: item["Serial number"],
+          date: date,
+        },
       });
     },
   },
@@ -77,15 +128,15 @@ export default {
     },
     data() {
       return this.$store.state.vehicle;
-    },    
+    },
   },
   watch: {
     "$route.query.page"() {
       this.getVehicle();
     },
-    // "$route.query.perPage"() {
-    //   this.getVehicle();
-    // },
+    "$route.query.perPage"() {
+      this.getVehicle();
+    },
   },
   mounted() {
     this.getVehicle();

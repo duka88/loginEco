@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <Header></Header>
+    <Header :title="$route.query.id" link="/"></Header>
     <Table></Table>
   </section>
 </template>

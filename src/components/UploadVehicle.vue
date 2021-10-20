@@ -43,7 +43,7 @@ export default {
         });
       }
       this.total = this.data.length;
-      const img = "2.png";
+      const img = this.getRandomNum() + ".png";
       for (let i = 0; i < this.total; i++) {
         this.current = i;
         const key = new Date(this.data[i]["Date/Time"]).getTime().toString();

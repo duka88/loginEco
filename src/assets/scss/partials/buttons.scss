@@ -8,6 +8,10 @@
   cursor: pointer;
   background-color: $white;
   transition: background-color 0.4s ease-in-out;
+  @include screen-min("desk") {
+    padding: 11px 38px;
+    font-size: 16px;
+  }
   &:hover,
   &--inactive {
     background-color: darken($white, 20%);

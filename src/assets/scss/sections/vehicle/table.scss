@@ -22,9 +22,14 @@
 .vehicle-table__head {
   font-weight: 700;
 }
+.vehicle-table__edit {
+  color: $blue;
+  font-weight: 700;
+  cursor: pointer;
+}
 .vehicle-table__pagination {
   @include flex-between(center);
   width: 100%;
-  max-width: 260px;
+  max-width: 340px;
   margin: 30px auto;
 }

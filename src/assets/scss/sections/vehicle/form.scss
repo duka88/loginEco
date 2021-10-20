@@ -1,0 +1,56 @@
+.form {
+  width: 100%;
+  padding: 30px 0 0;
+  @include screen-min("desk") {
+    padding: 50px 0 0;
+  }
+  label {
+    width: 100%;
+    display: block;
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 3px;
+  }
+  input,
+  select {
+    border: 1px solid $gray;
+    width: 100%;
+    font-size: 16px;
+    padding: 5px 15px;
+    @include screen-min("desk") {
+      padding: 10px 15px;
+    }
+    &:focus {
+      border: 2px solid $black;
+    }
+    &.error {
+      border: 2px solid $red;
+    }
+  }
+}
+.form__wrap {
+  @include screen-min("tab") {
+    @include flex-between(flex-start);
+    margin-bottom: 20px;
+  }
+}
+.form__row {
+  width: 100%;
+  margin-bottom: 18px;
+  position: relative;
+  @include screen-min("tab") {
+    width: calc(50% - 10px);
+  }
+  @include screen-min("desk") {
+    width: calc(50% - 20px);
+    margin-bottom: 25px;
+  }
+}
+.form__error {
+  position: absolute;
+  bottom: -15px;
+  font-size: 11px;
+  color: $red;
+  left: 0;
+  width: 100%;
+}

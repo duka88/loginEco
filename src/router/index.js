@@ -4,7 +4,7 @@ import Home from "../views/Home";
 import About from "../views/About";
 import Contact from "../views/Contact";
 import Vehicle from "../views/Vehicle";
-
+import VehicleEdit from "../views/VehicleEdit";
 Vue.use(VueRouter);
 
 const routes = [
@@ -27,6 +27,11 @@ const routes = [
     path: "/vehicle",
     name: "vehicle",
     component: Vehicle,
+  },
+  {
+    path: "/edit-vehicle",
+    name: "edit-vehicle",
+    component: VehicleEdit,
   },
 ];
 
