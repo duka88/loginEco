@@ -9,7 +9,7 @@
         class="vehicle-list__single"
       >
         <router-link
-          :to="{ name: 'Vehicle', params: { id: vehicle['Serial number'] } }"
+          :to="{ name: 'vehicle', query: { id: vehicle['Serial number'], page: 1, perPage: 10 } }"
         >
           <div class="vehicle-list__single-wrap">
             <figure class="vehicle-list__img">
@@ -50,7 +50,7 @@ export default {
 
   mounted() {
     if (this.vehicles.length == 0) {
-      this.$store.dispatch("getVehicles");
+      // this.$store.dispatch("getVehicles");
     }
   },
 };

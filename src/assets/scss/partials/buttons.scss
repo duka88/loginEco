@@ -8,7 +8,8 @@
   cursor: pointer;
   background-color: $white;
   transition: background-color 0.4s ease-in-out;
-  &:hover {
+  &:hover,
+  &--inactive {
     background-color: darken($white, 20%);
   }
 }
