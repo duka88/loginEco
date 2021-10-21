@@ -9,9 +9,22 @@
   text-align: center;
   background-color: $white;
   transition: background-color 0.4s ease-in-out;
+  &--select {
+    padding: 8px 10px;
+    background-color: $white !important;
+    text-align: left;
+  }
+  &--red {
+    border-color: $red;
+    background-color: lighten($red, 20%);
+    color: $white;
+  }
   @include screen-min("desk") {
     padding: 11px 38px;
     font-size: 16px;
+    &--select {
+      padding: 11px;
+    }
   }
   &:hover,
   &--inactive {

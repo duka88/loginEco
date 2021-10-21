@@ -11,7 +11,7 @@
         <router-link
           :to="{
             name: 'vehicle',
-            query: { id: vehicle['Serial number'], page: 1, perPage: 2 },
+            query: { id: vehicle['Serial number'], page: 1, perPage: 20 },
           }"
         >
           <div class="vehicle-list__single-wrap">
@@ -53,7 +53,7 @@ export default {
 
   mounted() {
     if (this.vehicles.length == 0) {
-     this.$store.dispatch("vehicles/getVehicles");
+      this.$store.dispatch("vehicles/getVehicles");
     }
   },
 };

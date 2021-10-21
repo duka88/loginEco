@@ -39,10 +39,25 @@ export default {
 
       file.onload = (e) => {
         this.loading = true;
-        const result = JSON.parse(e.target.result);
-        this.name = result[0]["Serial number"];
-        this.data = result;
-        // this.addVhicles();
+
+        const result = e.target.result;
+        const lines = result.split("\n");
+        const keys = lines[0].split(";");
+        const array = [];
+
+        lines.forEach((item, index) => {
+          if (index !== 0) {
+            const values = item.split(";");
+            const pair = {};
+            values.forEach((item, index) => {
+              pair[keys[index]] = item;
+            });
+            array.push(pair);
+          }
+        });
+        this.name = array[0]["Serial number"];
+        this.data = array;
+        this.addVhicles();
       };
 
       file.readAsText(files.item(0));
@@ -67,8 +82,10 @@ export default {
             img: img,
           });
         }
-          this.$store.commit("utils/setToster", 
-                {error: false, msg: "vehicle uploaded successfully"});
+        this.$store.commit("utils/setToster", {
+          error: false,
+          msg: "vehicle uploaded successfully",
+        });
       } catch (error) {
         this.$store.commit("utils/setToster", {
           error: true,

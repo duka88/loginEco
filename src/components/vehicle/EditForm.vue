@@ -1,6 +1,16 @@
 <template>
   <form class="form">
     <div class="form__wrap">
+      <transition v-if="confirme" name="fade">
+        <div class="form__confirm">
+          <h3 class="main-title">Are you sure?</h3>
+          <div class="form__btn-wrap">
+            <div @click="submit()" class="btn btn--red">Procide</div>
+            <div @click="confirme = false" class="btn">Cancel</div>
+          </div>
+        </div>
+      </transition>
+
       <div class="form__row form__row--50">
         <label for="AcStat">Actual status of creeper</label>
         <input
@@ -170,7 +180,7 @@
       </div>
     </div>
     <div v-if="loading" class="loader"></div>
-    <div v-else @click="submit()" class="btn">UPTATE</div>
+    <div v-else @click="confirm()" class="btn">UPTATE</div>
   </form>
 </template>
 <script>
@@ -268,39 +278,46 @@ export default {
       },
       error: false,
       loading: false,
+      confirme: false,
     };
   },
   methods: {
-    async submit() {
+    confirm() {
       this.clearErrors();
       this.validation();
       if (this.error) {
         return;
       }
+      this.confirme = true;
+    },
+    async submit() {
+      this.confirme = false;
       if (!this.loading) {
         const decode = this.$route.query.date
           .replaceAll("_", " ")
           .replaceAll("-", ":");
 
         const date = new Date(decode).getTime().toString();
-       try{
-        const res = await db
-              .collection("vhicles")
-              .doc(this.$route.query.id)
-              .collection("data")
-              .doc(date)          
-            console.log(res);
-            if (res.id) {
-              await res.set(this.setData(),{merge: true});
-            }
-            this.$store.commit("utils/setToster", 
-                {error: false, msg: "successfully updated"});
-       }catch(error) {      
-         this.$store.commit("utils/setToster", 
-                {error: true, msg: "something went wrong contact support"});
-       }
-   
+        try {
+          const res = await db
+            .collection("vhicles")
+            .doc(this.$route.query.id)
+            .collection("data")
+            .doc(date);
 
+          if (res.id) {
+            await res.set(this.setData(), { merge: true });
+          }
+          this.$store.commit("utils/setToster", {
+            error: false,
+            msg: "successfully updated",
+          });
+        } catch (error) {
+          this.$store.commit("utils/setToster", {
+            error: true,
+            msg: "something went wrong contact support",
+          });
+        }
       }
     },
     validation() {
@@ -349,13 +366,16 @@ export default {
       this.form.FuelCon.value = this.vehicle["Fuel consumption [l/h]"];
       this.form.Lat.value = this.vehicle["GPS latitude [°]"];
       this.form.Lng.value = this.vehicle["GPS longitude [°]"];
-      this.form.GroundSpeedGear.value =
-        this.vehicle["Ground speed gearbox [km/h]"];
-      this.form.GroundSpeedRadar.value =
-        this.vehicle["Ground speed radar [km/h]"];
+      this.form.GroundSpeedGear.value = this.vehicle[
+        "Ground speed gearbox [km/h]"
+      ];
+      this.form.GroundSpeedRadar.value = this.vehicle[
+        "Ground speed radar [km/h]"
+      ];
       this.form.SpeedFront.value = this.vehicle["Speed front PTO [rpm]"];
-      this.form.TransDiff.value =
-        this.vehicle["Transverse differential lock status []"];
+      this.form.TransDiff.value = this.vehicle[
+        "Transverse differential lock status []"
+      ];
       this.form.CurrGear.value = this.vehicle["current gear shift []"];
     },
     setData() {
@@ -373,7 +393,7 @@ export default {
         "Ground speed radar [km/h]": this.form.GroundSpeedRadar.value,
         "Speed front PTO [rpm]": this.form.SpeedFront.value,
         "Transverse differential lock status []": this.form.TransDiff.value,
-        "img": this.vehicle["img"],
+        img: this.vehicle["img"],
         "Serial number": this.vehicle["Serial number"],
         CurrGear: this.form.CurrGear.value,
       };

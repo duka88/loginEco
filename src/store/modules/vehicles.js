@@ -23,9 +23,12 @@ const mutations = {
     if (state.keys.length === 0) {
       const oby = Object.keys(payload);
       const keys = oby
-        .filter((item) => item !== "img" && item !== "Serial number")
+        .filter(
+          (item) =>
+            item !== "img" && item !== "Serial number" && item !== "Date/Time"
+        )
         .sort();
-      state.keys = keys;
+      state.keys = ["Date/Time", ...keys];
     }
   },
   setNext(state, payload) {
@@ -34,15 +37,10 @@ const mutations = {
   setPrev(state, payload) {
     state.prev = payload;
   },
-}
+};
 const actions = {
-  async getVehicles({
-    commit
-  }) {
-
+  async getVehicles({ commit }) {
     try {
-
-
       const res = await db.collection("vhicles").get();
       const vehicles = res.docs;
       const array = [];
@@ -59,18 +57,19 @@ const actions = {
       }
       commit("setVehicles", array);
     } catch (error) {
-      commit("utils/setToster", {
-        error: true,
-        msg: "something went wrong contact support"
-      }, {
-        root: true
-      });
+      commit(
+        "utils/setToster",
+        {
+          error: true,
+          msg: "something went wrong contact support",
+        },
+        {
+          root: true,
+        }
+      );
     }
   },
-  async getVehicle({
-    commit,
-    state
-  }, payload) {
+  async getVehicle({ dispatch, commit, state }, payload) {
     let page;
     try {
       const query = db
@@ -104,19 +103,22 @@ const actions = {
       commit("setPrev", vehicle[0]);
       commit("setVehicle", array);
       commit("setKeys", array[0]);
+      dispatch("setPage", { id: payload.id, last: vehicle[length - 1]?.id });
     } catch (error) {
-      commit("utils/setToster", {
-        error: true,
-        msg: "something went wrong contact support"
-      }, {
-        root: true
-      });
+      console.log(error);
+      commit(
+        "utils/setToster",
+        {
+          error: true,
+          msg: "something went wrong contact support",
+        },
+        {
+          root: true,
+        }
+      );
     }
-    // dispatch("setPage", { id: payload.id, last: vehicle[length - 1]?.id });
   },
-  async setEdit({
-    commit
-  }, payload) {
+  async setEdit({ commit }, payload) {
     try {
       const vehicle = await db
         .collection("vhicles")
@@ -126,51 +128,53 @@ const actions = {
         .get();
       commit("setEditVehicle", vehicle.data());
     } catch (error) {
-      commit("utils/setToster", {
-        error: true,
-        msg: "something went wrong contact support"
-      }, {
-        root: true
-      });
+      commit(
+        "utils/setToster",
+        {
+          error: true,
+          msg: "something went wrong contact support",
+        },
+        {
+          root: true,
+        }
+      );
     }
   },
 
-  // async setPage({ state }, payload) {
-  //   console.log(state);
-  //   const data = {
-  //     id: payload.id,
-  //   };
-  //   payload.last ? (data.page = payload.last) : 0;
-  //   const base = db.collection("paging").doc("next");
-  //   await base.set(data);
-  // },
+  async setPage({ state }, payload) {
+    console.log(state);
+    const data = {
+      id: payload.id,
+    };
+    payload.last ? (data.page = payload.last) : 0;
+    const base = db.collection("paging").doc("next");
+    await base.set(data);
+  },
 
-  // async getPage({ dispatch, commit }, payload) {
-  //   const res = await db.collection("paging").get();
-  //   const page = await res.docs[0].data().page;
+  async getPage({ dispatch, commit }, payload) {
+    const res = await db.collection("paging").get();
+    const page = await res.docs[0].data().page;
 
-  //   if (5 && payload.id === 5) {
-  //     const next = await db
-  //       .collection("vhicles")
-  //       .doc(payload.id)
-  //       .collection("data")
-  //       .doc(page.page)
-  //       .get();
-  //     commit("setNext", next);
-  //   }
+    const next = await db
+      .collection("vhicles")
+      .doc(payload.id)
+      .collection("data")
+      .doc(page)
+      .get();
+    commit("setNext", next);
 
-  //   dispatch("getVehicle", {
-  //     id: payload.id,
-  //     prev: false,
-  //     limit: payload.limit,
-  //   });
-  //   console.log(dispatch, payload, commit);
-  // },
+    dispatch("getVehicle", {
+      id: payload.id,
+      prev: false,
+      limit: payload.limit,
+    });
+    console.log(dispatch, payload, next, page);
+  },
 };
 
 export default {
   namespaced: true,
   state,
   actions,
-  mutations
+  mutations,
 };

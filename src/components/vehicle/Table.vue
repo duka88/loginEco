@@ -1,10 +1,10 @@
 <template>
   <div class="vehicle-table">
-    <select v-model="limit" @change="setLimit()">
-      <option value="2">10</option>
-      <option value="2">20</option>
-      <option value="5">50</option>
-      <option value="10">100</option>
+    <select class="btn btn--select" v-model="limit" @change="setLimit()">
+      <option value="20">Show 20</option>
+      <option value="30">Show 30</option>
+      <option value="50">Show 50</option>
+      <option value="100">Show 100</option>
     </select>
     <div class="vehicle-table__wrap">
       <table class="vehicle-table__table">
@@ -97,7 +97,7 @@ export default {
       });
     },
     checkPage() {
-      if (!this.next) {
+      if (this.$route.query.perPage > 1) {
         this.$store.dispatch("vehicles/getPage", {
           id: this.$route.query.id,
           prev: this.prev,
@@ -139,7 +139,7 @@ export default {
     },
   },
   mounted() {
-    this.getVehicle();
+    this.checkPage();
   },
 };
 </script>

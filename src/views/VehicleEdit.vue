@@ -27,7 +27,7 @@ export default {
       const decode = this.$route.query.date
         .replaceAll("_", " ")
         .replaceAll("-", ":");
-      console.log(decode);
+
       const date = new Date(decode).getTime().toString();
       if (Object.keys(this.vehicle).length === 0) {
         this.$store.dispatch("vehicles/setEdit", {

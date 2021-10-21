@@ -1,9 +1,9 @@
 <template>
   <main id="app">
     <Header></Header>
-       <transition name="slide-fade">
-                <Toster v-if="toster.msg" ></Toster>
-            </transition>
+    <transition name="slide-fade">
+      <Toster v-if="toster.msg"></Toster>
+    </transition>
     <div class="main">
       <router-view />
     </div>
@@ -19,12 +19,12 @@ export default {
   components: {
     Header,
     Footer,
-   Toster
+    Toster,
   },
-    computed: {
-        toster() {
-            return this.$store.state.utils.toster;
-        },
-    }
+  computed: {
+    toster() {
+      return this.$store.state.utils.toster;
+    },
+  },
 };
 </script>
