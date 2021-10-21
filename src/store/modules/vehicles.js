@@ -105,7 +105,6 @@ const actions = {
       commit("setKeys", array[0]);
       dispatch("setPage", { id: payload.id, last: vehicle[length - 1]?.id });
     } catch (error) {
-      console.log(error);
       commit(
         "utils/setToster",
         {
@@ -142,7 +141,6 @@ const actions = {
   },
 
   async setPage({ state }, payload) {
-    console.log(state);
     const data = {
       id: payload.id,
     };
@@ -168,7 +166,6 @@ const actions = {
       prev: false,
       limit: payload.limit,
     });
-    console.log(dispatch, payload, next, page);
   },
 };
 
