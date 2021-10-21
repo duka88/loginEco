@@ -30,7 +30,7 @@ export default {
       console.log(decode);
       const date = new Date(decode).getTime().toString();
       if (Object.keys(this.vehicle).length === 0) {
-        this.$store.dispatch("setEdit", {
+        this.$store.dispatch("vehicles/setEdit", {
           id: this.$route.query.id,
           date: date,
         });
@@ -39,7 +39,7 @@ export default {
   },
   computed: {
     vehicle() {
-      return this.$store.state.editVehicle;
+      return this.$store.state.vehicles.editVehicle;
     },
   },
   mounted() {

@@ -30,6 +30,9 @@
 .vehicle-table__pagination {
   @include flex-between(center);
   width: 100%;
-  max-width: 340px;
+  max-width: 260px;
   margin: 30px auto;
+  @include screen-min("desk") {
+    max-width: 340px;
+  }
 }

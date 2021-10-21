@@ -1,0 +1,15 @@
+.toster {
+    position: fixed;
+    top: 100px;
+    right: -5px;
+    background: lighten($green, 20%);
+    border: 2px solid $green;
+    border-radius: 5px;
+    padding: 5px 25px 5px 10px;
+    font-weight: 700;
+    z-index: 3;
+    &.error {
+        background: lighten($red, 30%);
+        border: 2px solid $red;
+    }
+}

@@ -42,7 +42,7 @@ export default {
   name: "Vehicle",
   computed: {
     vehicles() {
-      return this.$store.state.vehicles;
+      return this.$store.state.vehicles.vehicles;
     },
   },
   methods: {
@@ -53,7 +53,7 @@ export default {
 
   mounted() {
     if (this.vehicles.length == 0) {
-      this.$store.dispatch("getVehicles");
+     this.$store.dispatch("vehicles/getVehicles");
     }
   },
 };

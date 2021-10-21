@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import UploadVehicle from "../components/UploadVehicle.vue";
+import UploadVehicle from "../components/vehicle/UploadVehicle.vue";
 import List from "../components/vehicle/List";
 export default {
   name: "Home",

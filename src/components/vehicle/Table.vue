@@ -90,7 +90,7 @@ export default {
       });
     },
     getVehicle() {
-      this.$store.dispatch("getVehicle", {
+      this.$store.dispatch("vehicles/getVehicle", {
         id: this.$route.query.id,
         prev: this.prev,
         limit: this.$route.query.perPage,
@@ -98,7 +98,7 @@ export default {
     },
     checkPage() {
       if (!this.next) {
-        this.$store.dispatch("getPage", {
+        this.$store.dispatch("vehicles/getPage", {
           id: this.$route.query.id,
           prev: this.prev,
           limit: this.$route.query.perPage,
@@ -108,7 +108,7 @@ export default {
       }
     },
     setEdit(item) {
-      this.$store.commit("setEditVehicle", item);
+      this.$store.commit("vehicles/setEditVehicle", item);
       const date = item["Date/Time"].replaceAll(" ", "_").replaceAll(":", "-");
       this.$router.push({
         name: "edit-vehicle",
@@ -121,13 +121,13 @@ export default {
   },
   computed: {
     keys() {
-      return this.$store.state.keys;
+      return this.$store.state.vehicles.keys;
     },
     next() {
-      return this.$store.state.next;
+      return this.$store.state.vehicles.next;
     },
     data() {
-      return this.$store.state.vehicle;
+      return this.$store.state.vehicles.vehicle;
     },
   },
   watch: {

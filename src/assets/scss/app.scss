@@ -2,17 +2,22 @@
 @import "./setup/mixins";
 @import "./setup/reset";
 @import "./setup/variables";
+@import "./setup/animations";
+@import "./setup/hellpers";
 
 @import "./setup/init";
 
 @import "./partials/loader";
 @import "./partials/text";
 @import "./partials/buttons";
+@import "./partials/toster";
 
 @import "./sections/shared/header";
 @import "./sections/shared/footer";
 
+@import "./sections/vehicle/upload";
 @import "./sections/vehicle/header";
 @import "./sections/vehicle/list";
 @import "./sections/vehicle/table";
 @import "./sections/vehicle/form";
+@import "./sections/vehicle/map";
