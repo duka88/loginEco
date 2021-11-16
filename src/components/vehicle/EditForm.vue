@@ -1,14 +1,12 @@
 <template>
   <form class="form">
     <div class="form__wrap">
-      <transition v-if="confirme" name="fade">
-        <div class="form__confirm">
-          <h3 class="main-title">Are you sure?</h3>
-          <div class="form__btn-wrap">
-            <div @click="submit()" class="btn btn--red">Procide</div>
-            <div @click="confirme = false" class="btn">Cancel</div>
-          </div>
-        </div>
+      <transition name="fade">
+        <ConfirmPopup
+          v-if="isConfirmed"
+          @submit="submit()"
+          @confirmed="isConfirmed = false"
+        ></ConfirmPopup>
       </transition>
 
       <div class="form__row form__row--50">
@@ -184,10 +182,15 @@
   </form>
 </template>
 <script>
-import db from "../../firebase/firebaseInit";
+import db from "../../firebase/firebaseInit"
+import { mapActions } from "vuex"
+import ConfirmPopup from "../shared/ConfirmPopup"
 export default {
   name: "EditForm",
-  props: ["vehicle"],
+  props: { vehicle: { type: Object, required: true } },
+  components: {
+    ConfirmPopup,
+  },
   data() {
     return {
       form: {
@@ -278,105 +281,106 @@ export default {
       },
       error: false,
       loading: false,
-      confirme: false,
-    };
+      isConfirmed: false,
+    }
   },
   methods: {
+    ...mapActions("utils", ["triggerToster"]),
     confirm() {
-      this.clearErrors();
-      this.validation();
+      this.clearErrors()
+      this.validation()
       if (this.error) {
-        return;
+        return
       }
-      this.confirme = true;
+      this.isConfirmed = true
     },
     async submit() {
-      this.confirme = false;
+      this.isConfirmed = false
       if (!this.loading) {
         const decode = this.$route.query.date
           .replaceAll("_", " ")
-          .replaceAll("-", ":");
+          .replaceAll("-", ":")
 
-        const date = new Date(decode).getTime().toString();
+        const date = new Date(decode).getTime().toString()
         try {
           const res = await db
             .collection("vhicles")
             .doc(this.$route.query.id)
             .collection("data")
-            .doc(date);
+            .doc(date)
 
           if (res.id) {
-            await res.set(this.setData(), { merge: true });
+            await res.set(this.setData(), { merge: true })
           }
-          this.$store.commit("utils/setToster", {
+          this.triggerToster({
             error: false,
             msg: "successfully updated",
-          });
+          })
         } catch (error) {
-          this.$store.commit("utils/setToster", {
+          this.triggerToster({
             error: true,
             msg: "something went wrong contact support",
-          });
+          })
         }
       }
     },
     validation() {
-      const inputs = Object.keys(this.form);
+      const inputs = Object.keys(this.form)
 
       inputs.forEach((item) => {
-        const val = this.form[item].val;
-        const value = this.form[item].value;
+        const val = this.form[item].val
+        const value = this.form[item].value
         if (val) {
           if (val.required && !value) {
-            this.form[item].error = "this field is required";
-            this.error = true;
+            this.form[item].error = "this field is required"
+            this.error = true
           }
           if (val.min > value) {
-            this.form[item].error = `value must be bigger then ${val.min}`;
-            this.error = true;
+            this.form[item].error = `value must be bigger then ${val.min}`
+            this.error = true
           }
           if (val.max < value) {
-            this.form[item].error = `value can't be bigger then ${val.max}`;
-            this.error = true;
+            this.form[item].error = `value can't be bigger then ${val.max}`
+            this.error = true
           }
         }
-      });
+      })
       this.$nextTick(() => {
-        const error = document.querySelector(".error");
+        const error = document.querySelector(".error")
         if (error) {
-          const el = error.getBoundingClientRect().top + 50;
-          window.scrollTo({ top: el, behavior: "smooth" });
+          const el = error.getBoundingClientRect().top + 50
+          window.scrollTo({ top: el, behavior: "smooth" })
         }
-      });
+      })
     },
     clearErrors() {
-      const inputs = Object.keys(this.form);
+      const inputs = Object.keys(this.form)
       inputs.forEach((item) => {
-        this.form[item].error = "";
-        this.error = false;
-      });
+        this.form[item].error = ""
+        this.error = false
+      })
     },
     setForm() {
-      this.form.AcStat.value = this.vehicle["Actual status of creeper []"];
-      this.form.AllWheel.value = this.vehicle["All-wheel drive status []"];
-      this.form.AmTemp.value = this.vehicle["Ambient temperature [°C]"];
-      this.form.CoolTemp.value = this.vehicle["Coolant temperature [°C]"];
-      this.form.EngLoad.value = this.vehicle["Engine load [%]"];
-      this.form.EngSpeed.value = this.vehicle["Engine speed [rpm]"];
-      this.form.FuelCon.value = this.vehicle["Fuel consumption [l/h]"];
-      this.form.Lat.value = this.vehicle["GPS latitude [°]"];
-      this.form.Lng.value = this.vehicle["GPS longitude [°]"];
+      this.form.AcStat.value = this.vehicle["Actual status of creeper []"]
+      this.form.AllWheel.value = this.vehicle["All-wheel drive status []"]
+      this.form.AmTemp.value = this.vehicle["Ambient temperature [°C]"]
+      this.form.CoolTemp.value = this.vehicle["Coolant temperature [°C]"]
+      this.form.EngLoad.value = this.vehicle["Engine load [%]"]
+      this.form.EngSpeed.value = this.vehicle["Engine speed [rpm]"]
+      this.form.FuelCon.value = this.vehicle["Fuel consumption [l/h]"]
+      this.form.Lat.value = this.vehicle["GPS latitude [°]"]
+      this.form.Lng.value = this.vehicle["GPS longitude [°]"]
       this.form.GroundSpeedGear.value = this.vehicle[
         "Ground speed gearbox [km/h]"
-      ];
+      ]
       this.form.GroundSpeedRadar.value = this.vehicle[
         "Ground speed radar [km/h]"
-      ];
-      this.form.SpeedFront.value = this.vehicle["Speed front PTO [rpm]"];
+      ]
+      this.form.SpeedFront.value = this.vehicle["Speed front PTO [rpm]"]
       this.form.TransDiff.value = this.vehicle[
         "Transverse differential lock status []"
-      ];
-      this.form.CurrGear.value = this.vehicle["current gear shift []"];
+      ]
+      this.form.CurrGear.value = this.vehicle["current gear shift []"]
     },
     setData() {
       const data = {
@@ -396,14 +400,14 @@ export default {
         img: this.vehicle["img"],
         "Serial number": this.vehicle["Serial number"],
         CurrGear: this.form.CurrGear.value,
-      };
+      }
 
-      return data;
+      return data
     },
   },
 
   mounted() {
-    this.setForm();
+    this.setForm()
   },
-};
+}
 </script>

@@ -1,3 +1,10 @@
+.loader__wrap {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+  height: 300px;
+}
 .loader {
   border: 12px solid lighten($gray-light, 20%);
   border-top: 12px solid $gray;

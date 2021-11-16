@@ -19,7 +19,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in data" :key="item['Date/Time']">
+          <tr v-for="item in vehicle" :key="item['Date/Time']">
             <td class="vehicle-table__cell">
               <span @click="setEdit(item)" class="vehicle-table__edit"
                 >edit</span
@@ -47,37 +47,39 @@
   </div>
 </template>
 <script>
+import { mapState, mapActions } from "vuex"
 export default {
   name: "VehicleTable",
   data() {
     return {
       prev: false,
       limit: this.$route.query.perPage,
-    };
+    }
   },
   methods: {
+    ...mapActions("vehicles", ["getVehicle", "setEditVehicle"]),
     nextPage() {
       if (this.next) {
-        this.prev = false;
+        this.prev = false
         this.$router.push({
           query: {
             id: this.$route.query.id,
             page: +this.$route.query.page + 1,
             perPage: this.$route.query.perPage,
           },
-        });
+        })
       }
     },
     prevPage() {
       if (this.$route.query.page > 1) {
-        this.prev = true;
+        this.prev = true
         this.$router.push({
           query: {
             id: this.$route.query.id,
             page: +this.$route.query.page - 1,
             perPage: this.$route.query.perPage,
           },
-        });
+        })
       }
     },
     setLimit() {
@@ -87,59 +89,38 @@ export default {
           page: this.$route.query.page,
           perPage: this.limit,
         },
-      });
+      })
     },
-    getVehicle() {
-      this.$store.dispatch("vehicles/getVehicle", {
+   setVehicle() {
+      this.getVehicle({
         id: this.$route.query.id,
         prev: this.prev,
         limit: this.$route.query.perPage,
-      });
+      })
     },
-    checkPage() {
-      if (this.$route.query.perPage > 1) {
-        this.$store.dispatch("vehicles/getPage", {
-          id: this.$route.query.id,
-          prev: this.prev,
-          limit: this.$route.query.perPage,
-        });
-      } else {
-        this.getVehicle();
-      }
-    },
+  
     setEdit(item) {
-      this.$store.commit("vehicles/setEditVehicle", item);
-      const date = item["Date/Time"].replaceAll(" ", "_").replaceAll(":", "-");
+      this.setEditVehicle(item)
+      const date = item["Date/Time"].replaceAll(" ", "_").replaceAll(":", "-")
       this.$router.push({
         name: "edit-vehicle",
         query: {
           id: item["Serial number"],
           date: date,
         },
-      });
+      })
     },
   },
   computed: {
-    keys() {
-      return this.$store.state.vehicles.keys;
-    },
-    next() {
-      return this.$store.state.vehicles.next;
-    },
-    data() {
-      return this.$store.state.vehicles.vehicle;
-    },
+    ...mapState("vehicles", ["vehicle", "keys", "next"]),
   },
   watch: {
     "$route.query.page"() {
-      this.getVehicle();
+      this.setVehicle()
     },
     "$route.query.perPage"() {
-      this.getVehicle();
+      this.setVehicle()
     },
-  },
-  mounted() {
-    this.checkPage();
-  },
-};
+  }
+}
 </script>

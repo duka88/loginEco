@@ -13,6 +13,10 @@
 <script>
 export default {
   name: "VehicleHeader",
-  props: ["title", "subtitle", "link"],
-};
+  props: {
+    title: { type: String, required: true },
+    subtitle: { type: String, required: false },
+    link: { type: String, required: false },
+  },
+}
 </script>

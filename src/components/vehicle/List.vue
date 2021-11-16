@@ -38,23 +38,11 @@
 </template>
 
 <script>
+import { mapState } from "vuex"
 export default {
   name: "Vehicle",
   computed: {
-    vehicles() {
-      return this.$store.state.vehicles.vehicles;
-    },
+    ...mapState("vehicles", ["vehicles"]),
   },
-  methods: {
-    getId(id) {
-      return id;
-    },
-  },
-
-  mounted() {
-    if (this.vehicles.length == 0) {
-      this.$store.dispatch("vehicles/getVehicles");
-    }
-  },
-};
+}
 </script>

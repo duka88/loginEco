@@ -45,7 +45,8 @@
   </div>
 </template>
 <script>
-import InfoWindow from "./InfoWindow";
+import InfoWindow from "./InfoWindow"
+import { mapState } from "vuex"
 export default {
   name: "GoogleMap",
   components: {
@@ -72,58 +73,56 @@ export default {
         open: false,
       },
       path: [],
-    };
+    }
   },
   methods: {
     setMarker() {
-      this.marker.lat = +this.markers[this.markerIndex]["GPS latitude [°]"];
-      this.marker.lng = +this.markers[this.markerIndex]["GPS longitude [°]"];
-      this.infoWidow.data.date = this.markers[this.markerIndex]["Date/Time"];
+      this.marker.lat = +this.markers[this.markerIndex]["GPS latitude [°]"]
+      this.marker.lng = +this.markers[this.markerIndex]["GPS longitude [°]"]
+      this.infoWidow.data.date = this.markers[this.markerIndex]["Date/Time"]
       this.infoWidow.data.speed = this.markers[this.markerIndex][
         "Engine speed [rpm]"
-      ];
+      ]
       this.infoWidow.data.fuel = this.markers[this.markerIndex][
         "Fuel consumption [l/h]"
-      ];
+      ]
       this.infoWidow.data.colTemp = this.markers[this.markerIndex][
         "Coolant temperature [°C]"
-      ];
+      ]
       this.infoWidow.data.ambTemp = this.markers[this.markerIndex][
         "Ambient temperature [°C]"
-      ];
-      this.center.lat = this.marker.lat;
-      this.center.lng = this.marker.lng;
+      ]
+      this.center.lat = this.marker.lat
+      this.center.lng = this.marker.lng
     },
     drawLine() {
       const path = this.markers.map((item) => {
-        const obj = {};
-        obj.lng = +item["GPS longitude [°]"];
-        obj.lat = +item["GPS latitude [°]"];
-        return obj;
-      });
+        const obj = {}
+        obj.lng = +item["GPS longitude [°]"]
+        obj.lat = +item["GPS latitude [°]"]
+        return obj
+      })
 
-      this.path = path;
-      this.center.lat = path[0].lat;
-      this.center.lng = path[0].lng;
-      this.map.fitBounds(this.$refs.mapPol.$map.getBounds());
+      this.path = path
+      this.center.lat = path[0].lat
+      this.center.lng = path[0].lng
+      this.map.fitBounds(this.$refs.mapPol.$map.getBounds())
     },
     setCenter() {
-      this.center.lat = +this.markers[0]["GPS latitude [°]"];
-      this.center.lng = +this.markers[0]["GPS longitude [°]"];
+      this.center.lat = +this.markers[0]["GPS latitude [°]"]
+      this.center.lng = +this.markers[0]["GPS longitude [°]"]
     },
     setInfo() {
-      this.infoWidow.open = !this.infoWidow.open;
-      this.infoWidow.position = this.marker;
+      this.infoWidow.open = !this.infoWidow.open
+      this.infoWidow.position = this.marker
     },
   },
   computed: {
-    markers() {
-      return this.$store.state.vehicles.vehicle;
-    },
+    ...mapState({ markers: (state) => state.vehicles.vehicle }),
   },
   mounted() {
-    this.$refs.mapRef.$mapPromise.then((map) => (this.map = map));
-    this.setCenter();
+    this.$refs.mapRef.$mapPromise.then((map) => (this.map = map))
+    this.setCenter()
   },
-};
+}
 </script>

@@ -21,6 +21,6 @@
 <script>
 export default {
   name: "InfoWindow",
-  props: ["info"],
-};
+  props: { info: { type: Object, required: true } },
+}
 </script>

@@ -1,12 +1,12 @@
 <template>
-  <div class="toster" :class="{ error: toster.error }">
-    <p class="toster__text">{{ toster.msg }}</p>
+  <div class="loader__wrap" >
+    <div class="loader"></div>
   </div>
 </template>
 <script>
 import { mapState, mapActions } from "vuex"
 export default {
-  name: "toster",
+  name: "loader",
   computed: {
     ...mapState("utils", ["toster"]),
   },

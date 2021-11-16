@@ -2,7 +2,9 @@
   <header class="header">
     <div class="header__wrap">
       <figure class="header__logo">
-        <img src="../../assets/img/logo.png" alt="logo" />
+        <router-link to="/">
+          <img src="../../assets/img/logo.png" alt="logo" />
+        </router-link>
       </figure>
       <nav class="header__nav">
         <ul class="header__nav-list">
@@ -20,5 +22,5 @@
 <script>
 export default {
   name: "Header",
-};
+}
 </script>
