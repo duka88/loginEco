@@ -70,7 +70,7 @@ const actions = {
         "utils/triggerToster",
         {
           error: true,
-          msg: "something went wrong contact support",
+          msg: "something went wrong try refreshing the page or contact support ",
         },
         {
           root: true,
@@ -120,7 +120,7 @@ const actions = {
         "utils/triggerToster",
         {
           error: true,
-          msg: "something went wrong contact support",
+          msg: "something went wrong try refreshing the page or contact support ",
         },
         {
           root: true,
@@ -143,7 +143,7 @@ const actions = {
         "utils/triggerToster",
         {
           error: true,
-          msg: "something went wrong contact support",
+          msg: "something went wrong try refreshing the page or contact support ",
         },
         {
           root: true,
@@ -171,7 +171,7 @@ const actions = {
         "utils/triggerToster",
         {
           error: true,
-          msg: "something went wrong contact support",
+          msg: "something went wrong try refreshing the page or contact support ",
         },
         {
           root: true,
@@ -202,7 +202,7 @@ const actions = {
         "utils/triggerToster",
         {
           error: true,
-          msg: "something went wrong contact support",
+          msg: "something went wrong try refreshing the page or contact support ",
         },
         {
           root: true,
