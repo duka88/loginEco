@@ -64,6 +64,7 @@ const actions = {
         array.push(res.docs[0].data())
       }
       commit("setVehicles", array)
+      dispatch("utils/triggerLoader", false, { root: true })
     } catch (error) {
       dispatch(
         "utils/triggerToster",
@@ -78,19 +79,19 @@ const actions = {
     }
   },
   async getVehicle({ dispatch, commit, state }, payload) {
-    let page
-    try {
+    let page  
+    try { 
       const query = db
         .collection("vhicles")
         .doc(payload.id)
         .collection("data")
         .orderBy("img")
 
-      if (!payload.prev) {
-        page = query.startAfter(state.next).limit(payload.limit)
-      } else {
-        page = query.endBefore(state.prev).limitToLast(payload.limit)
-      }
+        if (!payload.prev) {  
+          page = query.startAfter(state.next).limit(payload.limit)
+        } else {
+          page = query.endBefore(state.prev).limitToLast(payload.limit)
+        }
 
       const res = await page.get()
 
@@ -98,6 +99,7 @@ const actions = {
       const length = vehicle.length
       const array = []
       let next
+   
       for (let i = 0; i < length; i++) {
         array.push(vehicle[i].data())
       }
@@ -110,9 +112,10 @@ const actions = {
       commit("setNext", next)
       commit("setPrev", vehicle[0])
       commit("setVehicle", array)  
+      dispatch("utils/triggerLoader", false, { root: true })
       dispatch("setPage", { id: payload.id, last: vehicle[length - 1]?.id })
     } catch (error) {
-      console.log(error)
+    
       dispatch(
         "utils/triggerToster",
         {
@@ -134,6 +137,7 @@ const actions = {
         .doc(payload.date)
         .get()
       commit("setEditVehicle", vehicle.data())
+      dispatch("utils/triggerLoader", false, { root: true })
     } catch (error) {
       dispatch(
         "utils/triggerToster",
@@ -150,13 +154,19 @@ const actions = {
 
   async setPage({ dispatch }, payload) {
     try {
+
       const data = {
         id: payload.id,
-      }
-      payload.last ? (data.page = payload.last) : 0
+        page: ''
+       }
+      if(payload.last){
+        data.page = payload.last
+      }   
+  
       const base = db.collection("paging").doc("next")
       await base.set(data)
     } catch (error) {
+     
       dispatch(
         "utils/triggerToster",
         {
@@ -203,6 +213,10 @@ const actions = {
   setEditVehicle({ commit }, payload) {
     commit("setEditVehicle", payload)
   },
+  resetPage({ commit }){
+    commit("setNext", false)
+    commit("setPrev", false)
+  }
 }
 
 export default {

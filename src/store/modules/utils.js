@@ -2,7 +2,8 @@ const state = {
   toster: {
     error: false,
     msg: "",
-  }
+  },
+  loader: false,
 }
 
 const mutations = {
@@ -16,11 +17,17 @@ const mutations = {
     state.overlay.action = payload.actionOverlay
     state.overlay.show = payload.show
   }, 
+  setLoader(state, payload) {
+    state.loader = payload
+  },
 }
 
 const actions = {
   triggerToster({ commit }, payload) {
     commit("setToster", payload)
+  },
+  triggerLoader({ commit }, payload) {
+    commit("setLoader", payload)
   },
 }
 

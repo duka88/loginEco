@@ -1,23 +1,31 @@
 <template>
   <div>
     <transition name="fade" mode="out-in">
-      <Loader v-if="!vehicle['Serial number']"></Loader>
+      <Loader v-if="loader"></Loader>
       <section v-else class="section">
         <Header
-          :title="vehicle['Serial number']"
-          :subtitle="vehicle['Date/Time']"
+          v-if="!vehicle['Serial number']"
+          :link="true"
+          title="No vehicle found"
         ></Header>
-        <EditForm v-if="vehicle.img" :vehicle="vehicle"></EditForm>
+        <div v-else>
+          <Header
+            :title="vehicle['Serial number']"
+            :subtitle="vehicle['Date/Time']"
+            :link="false"
+          ></Header>
+          <EditForm v-if="vehicle.img" :vehicle="vehicle"></EditForm>
+        </div>
       </section>
     </transition>
   </div>
 </template>
 
 <script>
-import Header from "../components/vehicle/Header"
-import EditForm from "../components/vehicle/EditForm"
-import { mapState, mapActions } from "vuex"
-import Loader from "../components/shared/Loader"
+import Header from "../components/vehicle/Header";
+import EditForm from "../components/vehicle/EditForm";
+import { mapState, mapActions } from "vuex";
+import Loader from "../components/shared/Loader";
 export default {
   name: "EditVehicle",
   components: {
@@ -26,31 +34,37 @@ export default {
     Loader,
   },
   data() {
-    return {}
+    return {};
+  },
+  computed: {
+    ...mapState({ vehicle: (state) => state.vehicles.editVehicle }),
+    ...mapState("utils", ["loader"]),
   },
   methods: {
     ...mapActions("vehicles", ["setEdit"]),
+    ...mapActions("utils", ["triggerLoader"]),
     getVehicle() {
-      this.$route.query.id
-      this.$route.query.date
+      this.$route.query.id;
+      this.$route.query.date;
       const decode = this.$route.query.date
         .replaceAll("_", " ")
-        .replaceAll("-", ":")
+        .replaceAll("-", ":");
 
-      const date = new Date(decode).getTime().toString()
+      const date = new Date(decode).getTime().toString();
       if (Object.keys(this.vehicle).length === 0) {
         this.setEdit({
           id: this.$route.query.id,
           date: date,
-        })
+        });
       }
     },
   },
-  computed: {
-    ...mapState({ vehicle: (state) => state.vehicles.editVehicle }),
-  },
+
   created() {
-    this.getVehicle()
+    if (!this.vehicle["Serial number"]) {
+      this.triggerLoader(true);
+      this.getVehicle();
+    }
   },
-}
+};
 </script>

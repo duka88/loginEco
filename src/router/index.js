@@ -5,6 +5,7 @@ import About from "../views/About";
 import Contact from "../views/Contact";
 import Vehicle from "../views/Vehicle";
 import VehicleEdit from "../views/VehicleEdit";
+import ErrorPage from "../views/ErrorPage";
 Vue.use(VueRouter);
 
 const routes = [
@@ -32,6 +33,11 @@ const routes = [
     path: "/edit-vehicle",
     name: "edit-vehicle",
     component: VehicleEdit,
+  },
+  {
+    path: "*",
+    name: "error-page",
+    component: ErrorPage,
   },
 ];
 
